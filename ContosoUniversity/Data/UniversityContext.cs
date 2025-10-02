@@ -1,7 +1,5 @@
 ﻿using ContosoUniversity.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Reflection.Emit;
 namespace ContosoUniversity.Data
 {
     public class UniversityContext : DbContext
@@ -15,7 +13,6 @@ namespace ContosoUniversity.Data
             modelBuilder.Entity<Student>().ToTable("Students");
             modelBuilder.Entity<Enrollment>().ToTable("Enrollments");
             modelBuilder.Entity<Course>().ToTable("Courses");
-
         }
     }
 }
