@@ -50,6 +50,9 @@ namespace ContosoUniversity.Migrations
 
                 SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnrollmentID"));
 
+                b.Property<int>("CorseID")
+                    .HasColumnType("int");
+
                 b.Property<int>("CourseID")
                     .HasColumnType("int");
 
