@@ -31,7 +31,8 @@ IServiceScope scope = app.Services.CreateScope();
 IServiceProvider service = scope.ServiceProvider;
 
 UniversityContext context = service.GetRequiredService<UniversityContext>();
-DbInitializer.Initialize(context);
+context.Database.EnsureCreated();
+Dbinitializer.Initialize(context);
 
 
 app.UseHttpsRedirection();
