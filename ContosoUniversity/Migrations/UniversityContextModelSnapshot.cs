@@ -23,106 +23,257 @@ namespace ContosoUniversity.Migrations
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("ContosoUniversity.Models.Course", b =>
-            {
-                b.Property<int>("CourseID")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("int");
+                {
+                    b.Property<int>("CourseID")
+                        .HasColumnType("int");
 
-                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseID"));
+                    b.Property<int>("Credits")
+                        .HasColumnType("int");
 
-                b.Property<int>("Credits")
-                    .HasColumnType("int");
+                    b.Property<int>("DepartmentID")
+                        .HasColumnType("int");
 
-                b.Property<string>("Title")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                b.HasKey("CourseID");
+                    b.HasKey("CourseID");
 
-                b.ToTable("Courses", (string)null);
-            });
+                    b.HasIndex("DepartmentID");
+
+                    b.ToTable("Courses", (string)null);
+                });
+
+            modelBuilder.Entity("ContosoUniversity.Models.CourseAssignment", b =>
+                {
+                    b.Property<int>("CourseID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InstructorID")
+                        .HasColumnType("int");
+
+                    b.HasKey("CourseID", "InstructorID");
+
+                    b.HasIndex("InstructorID");
+
+                    b.ToTable("CourseAssignments", (string)null);
+                });
+
+            modelBuilder.Entity("ContosoUniversity.Models.Department", b =>
+                {
+                    b.Property<int>("DepartmentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentID"));
+
+                    b.Property<decimal>("Budget")
+                        .HasColumnType("money");
+
+                    b.Property<int?>("InstructorID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("DepartmentID");
+
+                    b.HasIndex("InstructorID");
+
+                    b.ToTable("Departments", (string)null);
+                });
 
             modelBuilder.Entity("ContosoUniversity.Models.Enrollment", b =>
-            {
-                b.Property<int>("EnrollmentID")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("int");
+                {
+                    b.Property<int>("EnrollmentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnrollmentID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnrollmentID"));
 
-                b.Property<int>("CorseID")
-                    .HasColumnType("int");
+                    b.Property<int>("CourseID")
+                        .HasColumnType("int");
 
-                b.Property<int>("CourseID")
-                    .HasColumnType("int");
+                    b.Property<int?>("Grade")
+                        .HasColumnType("int");
 
-                b.Property<int?>("Grade")
-                    .HasColumnType("int");
+                    b.Property<int>("StudentID")
+                        .HasColumnType("int");
 
-                b.Property<int>("StudentID")
-                    .HasColumnType("int");
+                    b.HasKey("EnrollmentID");
 
-                b.HasKey("EnrollmentID");
+                    b.HasIndex("CourseID");
 
-                b.HasIndex("CourseID");
+                    b.HasIndex("StudentID");
 
-                b.HasIndex("StudentID");
+                    b.ToTable("Enrollments", (string)null);
+                });
 
-                b.ToTable("Enrollments", (string)null);
-            });
+            modelBuilder.Entity("ContosoUniversity.Models.Instructor", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(24)
+                        .HasColumnType("nvarchar(24)");
+
+                    b.Property<DateTime>("HireDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(24)
+                        .HasColumnType("nvarchar(24)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Instructors", (string)null);
+                });
+
+            modelBuilder.Entity("ContosoUniversity.Models.OfficeAssignment", b =>
+                {
+                    b.Property<int>("InstructorID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("InstructorID");
+
+                    b.ToTable("OfficeAssignments", (string)null);
+                });
 
             modelBuilder.Entity("ContosoUniversity.Models.Student", b =>
-            {
-                b.Property<int>("ID")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("int");
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                b.Property<DateTime>("EnrollmentDate")
-                    .HasColumnType("datetime2");
+                    b.Property<DateTime>("EnrollmentDate")
+                        .HasColumnType("datetime2");
 
-                b.Property<string>("FirstName")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(24)
+                        .HasColumnType("nvarchar(24)");
 
-                b.Property<string>("LastName")
-                    .IsRequired()
-                    .HasColumnType("nvarchar(max)");
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(24)
+                        .HasColumnType("nvarchar(24)");
 
-                b.HasKey("ID");
+                    b.HasKey("ID");
 
-                b.ToTable("Students", (string)null);
-            });
-
-            modelBuilder.Entity("ContosoUniversity.Models.Enrollment", b =>
-            {
-                b.HasOne("ContosoUniversity.Models.Course", "Course")
-                    .WithMany("Enrollments")
-                    .HasForeignKey("CourseID")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-
-                b.HasOne("ContosoUniversity.Models.Student", "Student")
-                    .WithMany("Enrollments")
-                    .HasForeignKey("StudentID")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-
-                b.Navigation("Course");
-
-                b.Navigation("Student");
-            });
+                    b.ToTable("Students", (string)null);
+                });
 
             modelBuilder.Entity("ContosoUniversity.Models.Course", b =>
-            {
-                b.Navigation("Enrollments");
-            });
+                {
+                    b.HasOne("ContosoUniversity.Models.Department", "Department")
+                        .WithMany("Courses")
+                        .HasForeignKey("DepartmentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("ContosoUniversity.Models.CourseAssignment", b =>
+                {
+                    b.HasOne("ContosoUniversity.Models.Course", "Course")
+                        .WithMany("CourseAssignments")
+                        .HasForeignKey("CourseID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ContosoUniversity.Models.Instructor", "Instructor")
+                        .WithMany("CourseAssignments")
+                        .HasForeignKey("InstructorID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Instructor");
+                });
+
+            modelBuilder.Entity("ContosoUniversity.Models.Department", b =>
+                {
+                    b.HasOne("ContosoUniversity.Models.Instructor", "Administrator")
+                        .WithMany()
+                        .HasForeignKey("InstructorID");
+
+                    b.Navigation("Administrator");
+                });
+
+            modelBuilder.Entity("ContosoUniversity.Models.Enrollment", b =>
+                {
+                    b.HasOne("ContosoUniversity.Models.Course", "Course")
+                        .WithMany("Enrollments")
+                        .HasForeignKey("CourseID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ContosoUniversity.Models.Student", "Student")
+                        .WithMany("Enrollments")
+                        .HasForeignKey("StudentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("ContosoUniversity.Models.OfficeAssignment", b =>
+                {
+                    b.HasOne("ContosoUniversity.Models.Instructor", "Instructor")
+                        .WithOne("OfficeAssignment")
+                        .HasForeignKey("ContosoUniversity.Models.OfficeAssignment", "InstructorID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Instructor");
+                });
+
+            modelBuilder.Entity("ContosoUniversity.Models.Course", b =>
+                {
+                    b.Navigation("CourseAssignments");
+
+                    b.Navigation("Enrollments");
+                });
+
+            modelBuilder.Entity("ContosoUniversity.Models.Department", b =>
+                {
+                    b.Navigation("Courses");
+                });
+
+            modelBuilder.Entity("ContosoUniversity.Models.Instructor", b =>
+                {
+                    b.Navigation("CourseAssignments");
+
+                    b.Navigation("OfficeAssignment")
+                        .IsRequired();
+                });
 
             modelBuilder.Entity("ContosoUniversity.Models.Student", b =>
-            {
-                b.Navigation("Enrollments");
-            });
+                {
+                    b.Navigation("Enrollments");
+                });
 #pragma warning restore 612, 618
         }
     }
